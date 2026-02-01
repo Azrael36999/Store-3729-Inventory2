@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+psycopg[binary]
+passlib[bcrypt]
+python-jose
