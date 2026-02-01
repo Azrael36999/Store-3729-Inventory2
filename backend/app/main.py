@@ -5,32 +5,28 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-# ✅ Allow Netlify site to call this API
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "https://sage-bonbon-bc29f7.netlify.app",  # your site
-        "http://localhost:5173",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    CORSMiddleware,
+    allow_origins=["*"],   # ← important
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 class LoginBody(BaseModel):
-    username: str
-    password: str
+    username: str
+    password: str
 
 @app.get("/health")
 def health():
-    return {"ok": True}
+    return {"ok": True}
 
 @app.post("/auth/login")
 def login(body: LoginBody):
-    user = os.getenv("INIT_USERNAME", "")
-    pw = os.getenv("INIT_PASSWORD", "")
+    user = os.getenv("INIT_USERNAME", "")
+    pw = os.getenv("INIT_PASSWORD", "")
 
-    if body.username != user or body.password != pw:
-        raise HTTPException(status_code=401, detail="Invalid login")
+    if body.username != user or body.password != pw:
+        raise HTTPException(status_code=401, detail="Invalid login")
 
-    return {"ok": True}
+    return {"ok": True}
